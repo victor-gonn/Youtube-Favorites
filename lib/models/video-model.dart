@@ -1,3 +1,5 @@
+
+
 class Video {
   final String id;
   final String title;
@@ -13,5 +15,14 @@ class Video {
       thumb: json["snippet"] ["thumbnails"] ["high"] ["url"],
       channel: json["snippet"] ["channelTitle"]
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "videoId" : id,
+      "title" : title,
+      "thumb" : thumb,
+      "channel" : channel
+    };
   }
 }
