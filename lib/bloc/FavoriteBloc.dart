@@ -3,14 +3,15 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:youtube_favoritos/models/video-model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Favorites implements BlocBase {
+class FavoritesBloc implements BlocBase {
   Map<String, Video> _favorites = {};
 
-  final StreamController<Map<String, Video>> _favController =
-      StreamController<Map<String, Video>>.broadcast();
+  final  _favController =
+      BehaviorSubject<Map<String, Video>>.seeded({});
   Stream<Map<String, Video>> get outFav => _favController.stream;
 
   FavoriteBloc() {
@@ -19,8 +20,9 @@ class Favorites implements BlocBase {
         _favorites = jsonDecode(prefs.getString("favorites") as String)
             .map((key, value) {
           return MapEntry(key, Video.fromJson(value));
-        });
+        }).cast<String, Video>();
         _favController.add(_favorites);
+        
       }
     });
   }

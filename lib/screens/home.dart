@@ -4,6 +4,7 @@ import 'package:youtube_favoritos/bloc/FavoriteBloc.dart';
 import 'package:youtube_favoritos/bloc/VideoBloc.dart';
 import 'package:youtube_favoritos/components/data-search.dart';
 import 'package:youtube_favoritos/models/video-model.dart';
+import 'package:youtube_favoritos/screens/favorites_screen.dart';
 import 'package:youtube_favoritos/widgets/video_tile.dart';
 
 
@@ -28,16 +29,19 @@ class Home extends StatelessWidget {
         actions: [ Align(
           alignment: Alignment.center,
           child: StreamBuilder<Map<String, Video>>(
-            stream: BlocProvider.getBloc<Favorites>().outFav, 
+            stream: BlocProvider.getBloc<FavoritesBloc>().outFav, 
             builder: (context, snapShot) {
               if(snapShot.hasData) {
                 return Text("${snapShot.data!.length}");
               } else {
-                return Text('0');
+                return CircularProgressIndicator();
               }
             })
         ),
-          IconButton(onPressed: (){}, 
+          IconButton(onPressed: (){
+            Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>FavScreen()));
+          }, 
          
           icon: Icon(Icons.star)
           ),

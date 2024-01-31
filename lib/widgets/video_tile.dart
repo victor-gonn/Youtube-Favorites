@@ -9,7 +9,7 @@ class VideoTile extends StatelessWidget {
 
   final Video video;
   
-  final bloc = BlocProvider.getBloc<Favorites>();
+  final bloc = BlocProvider.getBloc<FavoritesBloc>();
 
   
 
@@ -56,7 +56,7 @@ class VideoTile extends StatelessWidget {
               ),
               ),
               StreamBuilder<Map<String, Video>>(stream: bloc.outFav ,
-              initialData: {},
+              
                builder: (context, snapShot) {
                 if(snapShot.hasData) {
                   return IconButton(onPressed: (){
