@@ -5,13 +5,11 @@ import 'package:youtube_favoritos/bloc/FavoriteBloc.dart';
 import '../models/video-model.dart';
 
 class VideoTile extends StatelessWidget {
-   VideoTile({super.key, required this.video});
+  VideoTile({super.key, required this.video});
 
   final Video video;
-  
-  final bloc = BlocProvider.getBloc<FavoritesBloc>();
 
-  
+  final bloc = BlocProvider.getBloc<FavoritesBloc>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,45 +28,50 @@ class VideoTile extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
-                    child: Text(video.title,
-                    maxLines: 2,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
+                      child: Text(
+                        video.title,
+                        maxLines: 2,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
                     ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
-                    child: Text(video.channel,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                    ),),
-                  )
-                ],
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
+                      child: Text(
+                        video.channel,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
-              ),
-              StreamBuilder<Map<String, Video>>(stream: bloc.outFav ,
-              
-               builder: (context, snapShot) {
-                if(snapShot.hasData) {
-                  return IconButton(onPressed: (){
-                    bloc.toggleFav(video);
-                  }, 
-              icon: Icon(snapShot.data!.containsKey(video.id) ?
-              Icons.star : Icons.star_border),
-              color: Colors.white,);
-                } else {
-                  return CircularProgressIndicator();
-                }
-               })
+              StreamBuilder<Map<String, Video>>(
+                  stream: bloc.outFav,
+                  builder: (context, snapShot) {
+                    if (snapShot.hasData) {
+                      return IconButton(
+                        onPressed: () {
+                          bloc.toggleFav(video);
+                        },
+                        icon: Icon(snapShot.data!.containsKey(video.id)
+                            ? Icons.star
+                            : Icons.star_border),
+                        color: Colors.white,
+                      );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  })
             ],
           )
         ],

@@ -14,14 +14,14 @@ class FavoritesBloc implements BlocBase {
       BehaviorSubject<Map<String, Video>>.seeded({});
   Stream<Map<String, Video>> get outFav => _favController.stream;
 
-  FavoriteBloc() {
+  FavoritesBloc() {
     SharedPreferences.getInstance().then((prefs) {
       if (prefs.getKeys().contains("favorites")) {
-        _favorites = jsonDecode(prefs.getString("favorites") as String)
-            .map((key, value) {
+        _favorites = json.decode(prefs.getString("favorites")as String).map((key, value) {
           return MapEntry(key, Video.fromJson(value));
         }).cast<String, Video>();
         _favController.add(_favorites);
+        
         
       }
     });
@@ -39,9 +39,13 @@ class FavoritesBloc implements BlocBase {
   }
 
   void _saveFav() {
+    
     SharedPreferences.getInstance().then((prefs) {
-      prefs.setString("favorites", jsonEncode(_favorites));
+      prefs.setString("favorites", json.encode(_favorites));
+      print("PREF: $prefs");
+      print("FAVORITESSS:   $_favorites");
     });
+    
   }
 
   @override
@@ -50,6 +54,7 @@ class FavoritesBloc implements BlocBase {
   @override
   void dispose() {
     _favController.close();
+    
   }
 
   @override
